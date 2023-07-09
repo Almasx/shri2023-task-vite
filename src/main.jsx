@@ -1,4 +1,5 @@
 import './index.css'
+import './reset.css'
 
 import { Header, Main } from './App'
 
