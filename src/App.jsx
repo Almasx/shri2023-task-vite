@@ -327,14 +327,23 @@ function DevicesSlider(props) {
   const [hasRightScroll, setHasRightScroll] = React.useState(false);
 
   let sumWidth = 0;
-  const onSize = (width) => {
-    sumWidth += width;
+  const onSize = (item) => {
+    sumWidth += item.width;
   };
-  const memoizedOnSize = React.useCallback(onSize, [activeTab]);
 
   React.useEffect(() => {
     setHasRightScroll(sumWidth > ref.current.offsetWidth);
   }, [activeTab]);
+
+  const onArrowCLick = () => {
+    const scroller = ref.current.querySelector('.section__panel:not(.section__panel_hidden)');
+    if (scroller) {
+        scroller.scrollTo({
+            left: scroller.scrollLeft + 400,
+            behavior: 'smooth'
+        });
+    }
+};
 
   return (
 
@@ -347,7 +356,7 @@ function DevicesSlider(props) {
                      <Event
                          key={index}
                          {...item}
-                         onSize={memoizedOnSize}
+                         onSize={onSize}
                      />
                  )}
              </ul>
@@ -359,47 +368,6 @@ function DevicesSlider(props) {
  </div>
   );
 }
-{/* <div className="section__panel-wrapper" ref={ref}> */}
-{/* <div
-  ref={sliderRef}
-  role="tabpanel"
-  className="section__panel"
-  aria-hidden="false"
-  id={`panel_${activeTab}`}
-  aria-labelledby={`tab_${activeTab}`}
->
-  <ul className="section__panel-list">
-    {activeTab === "all" ? (
-      Array(2 ** 6)
-        .fill(0)
-        .map((el, i) => (
-          <MemoizedEventsSet
-            key={i}
-            arrayToShow={TABS[activeTab].items}
-            onSize={memoizedOnSize}
-          />
-
-        ))
-    ) : (
-      <MemoizedEventsSet
-        arrayToShow={TABS[activeTab].items}
-        onSize={onSize}
-      />
-    )}
-  </ul>
-</div>
-{hasRightScroll && (
-  <div
-    className="section__arrow"
-    onClick={() =>
-      sliderRef.current.scrollTo({
-        left: sliderRef.current.scrollLeft + 400,
-        behavior: "smooth",
-      })
-    }
-  ></div>
-)}
-</div> */}
 
 export function Main() {
   const [activeTab, setActiveTab] = React.useState(
